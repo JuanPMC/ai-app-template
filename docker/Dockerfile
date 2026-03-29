@@ -13,14 +13,15 @@ WORKDIR /app
 RUN pip install --no-cache-dir poetry
 
 # ---- Copy only dependency files first (cache optimization) ----
-COPY ../backend/pyproject.toml ../backend/poetry.lock ./backend/
+COPY ../backend/pyproject.toml ./backend/
 
 WORKDIR /app/backend
+RUN poetry lock
 RUN poetry install --no-root
 
 # ---- Frontend deps ----
 WORKDIR /app
-COPY ../frontend/package.json ../frontend/package-lock.json ./frontend/
+COPY ../frontend/package.json ./frontend/
 
 WORKDIR /app/frontend
 RUN npm install

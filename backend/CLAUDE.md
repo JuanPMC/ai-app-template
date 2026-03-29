@@ -2,9 +2,9 @@
 
 - Python 3.12+
 - FastAPI
-- SQLAlchemy 2.0 (async with asyncpg)
+- SQLAlchemy 2.0
 - Pydantic v2 for request/response models
-- PostgreSQL database
+- sqlite database
 - `transformers` (Hugging Face) + `torch` — wav2vec2-lv60-phoneme model
 - `librosa` — audio preprocessing
 
