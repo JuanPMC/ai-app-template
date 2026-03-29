@@ -17,7 +17,7 @@ async def evaluate_pronunciation(
     word_id: int,
     db: AsyncSession,
     model: PhonemeModel,
-    lang: str = "es",
+    lang: str = "en",
 ) -> EvaluationResponse:
     word = await get_word_by_id(word_id, db)
 
