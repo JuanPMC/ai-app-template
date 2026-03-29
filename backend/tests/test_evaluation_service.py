@@ -40,7 +40,7 @@ async def test_substitution_error(db_session: AsyncSession, mock_model):
     assert result.all_correct is False
     assert result.results[0].correct is False
     assert result.results[0].phoneme == "θ"
-    assert result.results[0].hint is not None  # θ_f is in ERROR_MAP
+    assert result.results[0].hint is not None  # θ is in ERROR_MAP
     assert all(r.correct for r in result.results[1:])
 
 
@@ -95,13 +95,13 @@ async def test_audio_processing_failure(db_session: AsyncSession, mock_model):
 
 
 async def test_error_map_miss(db_session: AsyncSession, mock_model):
-    word = Word(text="Think", ipa=["θ", "ɪ", "ŋ", "k"])
+    word = Word(text="Think", ipa=["[", "ɪ", "ŋ", "k"])
     db_session.add(word)
     await db_session.commit()
     await db_session.refresh(word)
 
     # "z" substitution for "θ" has no ERROR_MAP entry
-    mock_model.predict.return_value = ["z", "ɪ", "ŋ", "k"]
+    mock_model.predict.return_value = ["t", "ɪ", "ŋ", "k"]
 
     result = await evaluate_pronunciation(b"audio", word.id, db_session, mock_model)
 

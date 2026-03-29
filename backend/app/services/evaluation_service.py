@@ -37,7 +37,7 @@ async def evaluate_pronunciation(
         if i < len(user_phonemes):
             produced = user_phonemes[i]
             correct = produced == target
-            hint = None if correct else error_map.get(f"{target}_{produced}")
+            hint = None if correct else error_map.get(target)
         else:
             correct = False
             hint = None
