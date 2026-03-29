@@ -12,25 +12,12 @@
 ```
 src/
 ├── pages/
-│   ├── Login.tsx             # Phone + password login form
-│   ├── Register.tsx          # Full registration form (all profile fields)
-│   ├── Discover.tsx          # Discovery feed with ProfileCard + match notification
-│   └── Matches.tsx           # List of mutual matches with Call/Text/Unmatch
 ├── components/
 │   └── features/
-│       ├── Layout.tsx        # App shell: header, nav (Discover/Matches/Logout), Outlet
-│       └── ProfileCard.tsx   # Card displaying name, age, description + Like/Pass buttons
 ├── services/
-│   ├── api.ts                # Fetch wrapper with JWT injection, 401 interceptor, error handling
-│   ├── auth.ts               # register(), login(), getMe()
-│   └── discovery.ts          # getDiscoveryProfile(), likeUser(), getMatches(), unmatchUser()
 ├── stores/
-│   └── auth.store.ts         # Zustand store: token, isAuthenticated, setToken(), logout()
 ├── types/
-│   ├── user.ts               # UserResponse, UserCreate, UserUpdate, Token, TokenRequest
-│   └── discovery.ts          # DiscoveryProfile, LikeResponse, MatchResponse
 ├── utils/
-│   └── cn.ts                 # clsx + tailwind-merge utility
 ├── App.tsx                   # Router setup, ProtectedRoute, QueryClientProvider
 ├── main.tsx                  # React root + StrictMode
 └── index.css                 # Tailwind directives
@@ -51,27 +38,3 @@ src/
 - Types live in `types/` and mirror backend schemas.
 - API services are thin wrappers: one function per endpoint, typed return values.
 - Tailwind classes directly in JSX. Use `cn()` for conditional classes.
-
-## Routing
-
-- `/login` -- Login page (redirects to `/discover` if already authenticated)
-- `/register` -- Register page (redirects to `/discover` if already authenticated)
-- `/` -- ProtectedRoute wrapper (redirects to `/login` if not authenticated)
-  - `/discover` -- Discovery feed (default)
-  - `/matches` -- Matches list
-
-## Key Design Decisions
-
-- Token stored in `localStorage` under key `"token"`. The API layer reads it on every request.
-- 401 responses auto-clear the token and redirect to `/login` (interceptor in `api.ts`).
-- 204 No Content responses (from DELETE) return `undefined` instead of parsing JSON.
-- Match notifications use a 3-second auto-dismiss toast via local state.
-- The Vite dev server proxies `/api` to `http://localhost:8000` (backend).
-
-## Dev Server
-
-```bash
-npm run dev     # Start at http://localhost:5173
-npm run build   # Type-check + production build
-npm run lint    # ESLint
-```

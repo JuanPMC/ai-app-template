@@ -4,9 +4,7 @@
 - FastAPI
 - SQLAlchemy 2.0 (async with aiosqlite)
 - Pydantic v2 for request/response models
-- SQLite database (file: `nopictin.db`)
-- passlib[bcrypt] for password hashing (bcrypt must be <4.1 for passlib compatibility)
-- python-jose for JWT tokens
+- SQLite database
 
 ## Project Structure
 
@@ -14,8 +12,6 @@
 app/
 ├── api/
 │   ├── v1/
-│   │   ├── auth.py          # POST /register, POST /token
-│   │   ├── users.py         # GET /me, PUT /me
 │   │   ├── discovery.py     # GET /discovery
 │   │   ├── likes.py         # POST /like/{target_id}
 │   │   ├── matches.py       # GET /matches, DELETE /matches/{target_id}
@@ -65,17 +61,8 @@ app/
 - Run tests: `./venv/bin/python -m pytest tests/ -v`
 - All fixtures are in `tests/conftest.py`: `engine`, `db`, `client`, `user_alice`, `user_bob`, `user_charlie`, `auth_header()`
 
-## Key Design Decisions
-
-- Phone numbers are only exposed in the `GET /matches` response (`MatchResponse`), never in `UserResponse` or `DiscoveryProfile`.
-- Discovery shows profiles the user has already liked/disliked (per PRD "fluid interactions" — users can change their mind).
-- Discovery excludes only mutual matches.
-- The Like model uses a unique constraint on `(user_id, target_id)` for upsert behavior.
-- Unmatch is one-directional: only the current user's `is_like` is set to `false`, which breaks the mutual match for both sides.
-
 ## NEVER DO THIS
 
-1. **Never use bcrypt >= 4.1 with passlib 1.7.4.** The API changed and breaks passlib's internal checks.
 2. **Never do ORM queries in routers.** Routers call services, services call the ORM.
 3. **Never return SQLAlchemy models from endpoints.** Always map to a Pydantic Response schema.
 4. **Never hardcode connection strings or secrets.** Use environment variables via `pydantic-settings`.
