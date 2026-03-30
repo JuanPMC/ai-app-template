@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.ml.audio_converter import AudioConversionError
 from app.models.word import Word
 from app.services.evaluation_service import evaluate_pronunciation
 
@@ -92,6 +93,20 @@ async def test_audio_processing_failure(db_session: AsyncSession, mock_model):
     with pytest.raises(HTTPException) as exc_info:
         await evaluate_pronunciation(b"bad", word.id, db_session, mock_model)
     assert exc_info.value.status_code == 422
+
+
+async def test_audio_conversion_failure_returns_422(db_session: AsyncSession, mock_model):
+    word = Word(text="Think", ipa=["θ", "ɪ", "ŋ", "k"])
+    db_session.add(word)
+    await db_session.commit()
+    await db_session.refresh(word)
+
+    mock_model.predict.side_effect = AudioConversionError("bad format")
+
+    with pytest.raises(HTTPException) as exc_info:
+        await evaluate_pronunciation(b"bad", word.id, db_session, mock_model)
+    assert exc_info.value.status_code == 422
+    assert "Audio processing failed" in exc_info.value.detail
 
 
 async def test_error_map_miss(db_session: AsyncSession, mock_model):

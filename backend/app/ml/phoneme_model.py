@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 
 import librosa
+from app.ml.audio_converter import convert_audio_to_wav
 import numpy as np
 import torch
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
@@ -17,6 +18,7 @@ class PhonemeModel:
         self._model.eval()
 
     def predict(self, audio_bytes: bytes) -> list[str]:
+        audio_bytes = convert_audio_to_wav(audio_bytes)
         audio_array, original_sr = librosa.load(
             io.BytesIO(audio_bytes), sr=None, mono=True
         )
