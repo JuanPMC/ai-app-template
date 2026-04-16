@@ -123,6 +123,7 @@ VERY IMPORTANT:
 
 IDEA:
 <paste here your task description>
+```
 
 2. When you are done dump summary in specs.md file:
 ```
