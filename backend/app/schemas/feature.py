@@ -9,12 +9,20 @@ class FeatureCreate(BaseModel):
     title: str
     description: str = ""
     status: str = "draft"
+    entry: str | None = None
+    usecase: str | None = None
+    initiative_tag: str | None = None
+    integration: str | None = None
 
 
 class FeatureUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
     status: str | None = None
+    entry: str | None = None
+    usecase: str | None = None
+    initiative_tag: str | None = None
+    integration: str | None = None
 
 
 class FeatureBrief(BaseModel):
@@ -22,6 +30,8 @@ class FeatureBrief(BaseModel):
     title: str
     status: str
     story_count: int
+    entry: str | None = None
+    usecase: str | None = None
 
 
 class FeatureResponse(BaseModel):
@@ -31,4 +41,8 @@ class FeatureResponse(BaseModel):
     title: str
     description: str
     status: str
+    entry: str | None = None
+    usecase: str | None = None
+    initiative_tag: str | None = None
+    integration: str | None = None
     stories: list[StoryResponse]

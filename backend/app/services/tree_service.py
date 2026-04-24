@@ -46,6 +46,8 @@ def get_tree(client: GitHubClient) -> list[InitiativeTree]:
                             slug=f_slug,
                             title=parsed.title,
                             status=parsed.tags.get("status", "draft"),
+                            entry=parsed.tags.get("entry"),
+                            usecase=parsed.tags.get("usecase"),
                             story_count=len(parsed.scenarios),
                             stories=stories,
                         )

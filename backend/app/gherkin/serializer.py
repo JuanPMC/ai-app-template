@@ -5,11 +5,18 @@ from __future__ import annotations
 from app.gherkin.parser import ParsedFeature, ParsedScenario, ParsedStep
 
 
+# Tags that use colon separator (@entry:bos.clients)
+_COLON_TAGS = {"entry", "usecase", "initiative", "integration"}
+
+
 def serialize_tags(metadata: dict[str, str]) -> str:
-    """Convert ``{'status': 'active', 'priority': 'high'}`` → ``@status-active @priority-high``."""
+    """Convert ``{'status': 'active', 'entry': 'bos.clients'}`` → ``@status-active @entry:bos.clients``."""
     parts: list[str] = []
     for key, value in metadata.items():
-        parts.append(f"@{key}-{value}")
+        if key in _COLON_TAGS:
+            parts.append(f"@{key}:{value}")
+        else:
+            parts.append(f"@{key}-{value}")
     return " ".join(parts)
 
 

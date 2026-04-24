@@ -11,6 +11,8 @@ class FeatureTree(BaseModel):
     slug: str
     title: str
     status: str
+    entry: str | None = None
+    usecase: str | None = None
     story_count: int
     stories: list[StoryBrief]
 

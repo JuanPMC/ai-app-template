@@ -62,7 +62,6 @@ def create_story(
         tags={"status": data.status},
         title=data.title,
         steps=[ParsedStep(keyword=s.keyword, text=s.text) for s in data.steps],
-        raw_tags=[f"@status-{data.status}"],
     )
     parsed.scenarios.append(new_scenario)
     new_index = len(parsed.scenarios) - 1

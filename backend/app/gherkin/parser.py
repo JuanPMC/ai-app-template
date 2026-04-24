@@ -30,22 +30,33 @@ class ParsedFeature:
 
 
 # Recognised tag prefixes → metadata key
-_TAG_PREFIXES = ("status", "priority", "points")
+# Hyphen-separated: @status-active, @priority-high, @points-5
+_HYPHEN_PREFIXES = ("status", "priority", "points")
+# Colon-separated: @entry:bos.clients, @usecase:initiate-payment
+_COLON_PREFIXES = ("entry", "usecase", "initiative", "integration")
 
 _STEP_KEYWORDS = {"Given", "When", "Then", "And", "But"}
-_TAG_RE = re.compile(r"@([\w-]+)")
+_TAG_RE = re.compile(r"@([\w.:/-]+)")
 
 
 def extract_tags(raw_tags: list[str]) -> dict[str, str]:
-    """Convert ``['@status-active', '@priority-high']`` → ``{'status': 'active', 'priority': 'high'}``."""
+    """Convert ``['@status-active', '@entry:bos.clients']`` → ``{'status': 'active', 'entry': 'bos.clients'}``."""
     result: dict[str, str] = {}
     for tag in raw_tags:
         tag = tag.lstrip("@")
-        for prefix in _TAG_PREFIXES:
-            if tag.startswith(f"{prefix}-"):
+        # Try colon-separated first (e.g. entry:bos.clients)
+        for prefix in _COLON_PREFIXES:
+            if tag.startswith(f"{prefix}:"):
                 value = tag[len(prefix) + 1 :]
                 result[prefix] = value
                 break
+        else:
+            # Try hyphen-separated (e.g. status-active)
+            for prefix in _HYPHEN_PREFIXES:
+                if tag.startswith(f"{prefix}-"):
+                    value = tag[len(prefix) + 1 :]
+                    result[prefix] = value
+                    break
     return result
 
 

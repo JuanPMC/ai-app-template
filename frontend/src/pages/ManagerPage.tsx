@@ -42,7 +42,7 @@ export function ManagerPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent">
               <span className="text-lg font-bold text-dark">P</span>
             </div>
-            <h1 className="text-xl font-bold text-dark">Positivus</h1>
+            <h1 className="text-xl font-bold text-dark">Product Manager Portal</h1>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted">
             <span className="text-dark font-medium">Initiatives</span>

@@ -40,6 +40,10 @@ export interface Feature {
   title: string;
   description: string;
   status: Status;
+  entry: string | null;
+  usecase: string | null;
+  initiative_tag: string | null;
+  integration: string | null;
   stories: Story[];
 }
 
@@ -47,12 +51,20 @@ export interface FeatureCreate {
   title: string;
   description?: string;
   status?: Status;
+  entry?: string;
+  usecase?: string;
+  initiative_tag?: string;
+  integration?: string;
 }
 
 export interface FeatureUpdate {
   title?: string;
   description?: string;
   status?: Status;
+  entry?: string;
+  usecase?: string;
+  initiative_tag?: string;
+  integration?: string;
 }
 
 export interface FeatureBrief {
@@ -60,6 +72,8 @@ export interface FeatureBrief {
   title: string;
   status: Status;
   story_count: number;
+  entry: string | null;
+  usecase: string | null;
 }
 
 // ── Stories (Scenarios) ─────────────────────────────────────────────
@@ -95,6 +109,8 @@ export interface FeatureTree {
   slug: string;
   title: string;
   status: Status;
+  entry: string | null;
+  usecase: string | null;
   story_count: number;
   stories: StoryBrief[];
 }

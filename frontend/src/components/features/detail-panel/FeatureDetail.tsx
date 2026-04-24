@@ -40,6 +40,10 @@ export function FeatureDetail({
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
   const [editStatus, setEditStatus] = useState<Status>("draft");
+  const [editEntry, setEditEntry] = useState("");
+  const [editUsecase, setEditUsecase] = useState("");
+  const [editInitiativeTag, setEditInitiativeTag] = useState("");
+  const [editIntegration, setEditIntegration] = useState("");
   const [storyTitle, setStoryTitle] = useState("");
   const [showStoryForm, setShowStoryForm] = useState(false);
 
@@ -51,6 +55,10 @@ export function FeatureDetail({
     setEditTitle(feature.title);
     setEditDesc(feature.description);
     setEditStatus(feature.status);
+    setEditEntry(feature.entry ?? "");
+    setEditUsecase(feature.usecase ?? "");
+    setEditInitiativeTag(feature.initiative_tag ?? "");
+    setEditIntegration(feature.integration ?? "");
     setEditing(true);
   };
 
@@ -60,7 +68,15 @@ export function FeatureDetail({
         initiativeSlug,
         entitySlug,
         featureSlug,
-        data: { title: editTitle, description: editDesc, status: editStatus },
+        data: {
+          title: editTitle,
+          description: editDesc,
+          status: editStatus,
+          entry: editEntry || undefined,
+          usecase: editUsecase || undefined,
+          initiative_tag: editInitiativeTag || undefined,
+          integration: editIntegration || undefined,
+        },
       },
       { onSuccess: () => setEditing(false) }
     );
@@ -134,6 +150,50 @@ export function FeatureDetail({
             <option key={s} value={s}>{s.replace(/_/g, " ")}</option>
           ))}
         </select>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-medium text-muted mb-1">Entry Point <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              value={editEntry}
+              onChange={(e) => setEditEntry(e.target.value)}
+              className="w-full rounded-xl border border-dark/20 bg-white px-4 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-accent/50"
+              placeholder="e.g. bos.clients"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted mb-1">Use Case <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              value={editUsecase}
+              onChange={(e) => setEditUsecase(e.target.value)}
+              className="w-full rounded-xl border border-dark/20 bg-white px-4 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-accent/50"
+              placeholder="e.g. initiate-payment"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted mb-1">Initiative</label>
+            <input
+              type="text"
+              value={editInitiativeTag}
+              onChange={(e) => setEditInitiativeTag(e.target.value)}
+              className="w-full rounded-xl border border-dark/20 bg-white px-4 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-accent/50"
+              placeholder="e.g. npp"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted mb-1">Integration</label>
+            <input
+              type="text"
+              value={editIntegration}
+              onChange={(e) => setEditIntegration(e.target.value)}
+              className="w-full rounded-xl border border-dark/20 bg-white px-4 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-accent/50"
+              placeholder="e.g. asl"
+            />
+          </div>
+        </div>
+
         <div className="flex gap-2">
           <Button variant="accent" onClick={saveEdit} disabled={updateMutation.isPending}>Save</Button>
           <Button variant="ghost" onClick={() => setEditing(false)}>Cancel</Button>
@@ -159,7 +219,32 @@ export function FeatureDetail({
         {initiativeSlug} / {entitySlug}
       </p>
       {feature.description && (
-        <p className="text-sm text-dark/70 mb-6">{feature.description}</p>
+        <p className="text-sm text-dark/70 mb-4">{feature.description}</p>
+      )}
+
+      {(feature.entry || feature.usecase || feature.initiative_tag || feature.integration) && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {feature.entry && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-purple-100 px-2.5 py-1 text-xs font-medium text-purple-800">
+              <span className="text-purple-500">entry:</span>{feature.entry}
+            </span>
+          )}
+          {feature.usecase && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-800">
+              <span className="text-indigo-500">usecase:</span>{feature.usecase}
+            </span>
+          )}
+          {feature.initiative_tag && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800">
+              <span className="text-amber-500">initiative:</span>{feature.initiative_tag}
+            </span>
+          )}
+          {feature.integration && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-teal-100 px-2.5 py-1 text-xs font-medium text-teal-800">
+              <span className="text-teal-500">integration:</span>{feature.integration}
+            </span>
+          )}
+        </div>
       )}
 
       <div className="flex gap-2 mb-8">

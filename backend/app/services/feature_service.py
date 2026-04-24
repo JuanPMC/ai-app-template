@@ -44,6 +44,10 @@ def _to_feature_response(
         title=parsed.title,
         description=parsed.description,
         status=parsed.tags.get("status", "draft"),
+        entry=parsed.tags.get("entry"),
+        usecase=parsed.tags.get("usecase"),
+        initiative_tag=parsed.tags.get("initiative"),
+        integration=parsed.tags.get("integration"),
         stories=stories,
     )
 
@@ -67,6 +71,8 @@ def list_features(
                     title=parsed.title,
                     status=parsed.tags.get("status", "draft"),
                     story_count=len(parsed.scenarios),
+                    entry=parsed.tags.get("entry"),
+                    usecase=parsed.tags.get("usecase"),
                 )
             )
         except Exception:
@@ -97,12 +103,21 @@ def create_feature(
     slug = _slugify(data.title)
     path = _feature_path(initiative_slug, entity_slug, slug)
 
+    tags: dict[str, str] = {"status": data.status}
+    if data.entry:
+        tags["entry"] = data.entry
+    if data.usecase:
+        tags["usecase"] = data.usecase
+    if data.initiative_tag:
+        tags["initiative"] = data.initiative_tag
+    if data.integration:
+        tags["integration"] = data.integration
+
     parsed = ParsedFeature(
-        tags={"status": data.status},
+        tags=tags,
         title=data.title,
         description=data.description,
         scenarios=[],
-        raw_tags=[f"@status-{data.status}"],
     )
     content = serialize_feature(parsed)
     client.create_file(path, content, f"feat: create feature {slug}")
@@ -132,6 +147,14 @@ def update_feature(
         parsed.description = data.description
     if data.status is not None:
         parsed.tags["status"] = data.status
+    if data.entry is not None:
+        parsed.tags["entry"] = data.entry
+    if data.usecase is not None:
+        parsed.tags["usecase"] = data.usecase
+    if data.initiative_tag is not None:
+        parsed.tags["initiative"] = data.initiative_tag
+    if data.integration is not None:
+        parsed.tags["integration"] = data.integration
 
     new_content = serialize_feature(parsed)
     client.update_file(path, new_content, sha, f"update: modify {feature_slug}.feature")
