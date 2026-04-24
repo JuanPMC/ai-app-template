@@ -4,7 +4,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    database_url: str = "sqlite+aiosqlite:///./app.db"
+    github_token: str
+    github_repo: str
+    github_branch: str = "main"
+    features_base_path: str = "initiatives/"
 
     model_config = SettingsConfigDict(env_prefix="APP_")
 
