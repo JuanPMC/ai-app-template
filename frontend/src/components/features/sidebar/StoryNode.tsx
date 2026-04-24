@@ -11,7 +11,7 @@ export function StoryNode({ story, isSelected, onSelect }: StoryNodeProps) {
   return (
     <TreeView
       label={story.title}
-      icon="📝"
+      icon="📖"
       isLeaf
       isSelected={isSelected}
       onClick={onSelect}

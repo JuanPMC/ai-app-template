@@ -27,7 +27,7 @@ export function EntityNode({
   return (
     <TreeView
       label={entity.name}
-      icon="📁"
+      icon="👤"
       isExpanded={expanded}
       onToggle={() => setExpanded(!expanded)}
       isSelected={isSelected}

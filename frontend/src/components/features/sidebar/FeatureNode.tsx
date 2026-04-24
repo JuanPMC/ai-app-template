@@ -30,7 +30,7 @@ export function FeatureNode({
   return (
     <TreeView
       label={`${feature.title} (${feature.status})`}
-      icon="📄"
+      icon="⚙️"
       isExpanded={expanded}
       onToggle={() => setExpanded(!expanded)}
       isSelected={isSelected}

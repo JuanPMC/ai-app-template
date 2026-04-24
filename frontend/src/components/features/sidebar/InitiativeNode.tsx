@@ -24,7 +24,7 @@ export function InitiativeNode({
   return (
     <TreeView
       label={initiative.name}
-      icon="🗂️"
+      icon="🚀"
       isExpanded={expanded}
       onToggle={() => setExpanded(!expanded)}
       isSelected={isSelected}
