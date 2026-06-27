@@ -55,6 +55,14 @@ tests/
 - Error responses: raise `HTTPException` with specific status codes and detail messages.
 - Environment config: use `pydantic-settings` with `Settings` class. Access via `get_settings()`. Never use `os.getenv()`.
 
+## Development Standards & TDD Constraints
+- **Test-Driven Development (TDD):** You must follow a strict TDD approach for all code modifications.
+- **Behavior in Planning Mode:** Whenever the user initiates a planning phase (such as via the `/plan` command), your generated implementation roadmap must enforce a strict **Red-Green-Refactor** pattern for every single file or module change:
+  1. **Red:** Explicitly define the test files and test cases that must be written *before* any production logic is introduced.
+  2. **Green:** Detail the absolute minimal feature code required to satisfy those tests.
+  3. **Refactor:** Outline structural or stylistic cleanup steps to take once the tests pass.
+- Do not suggest or write implementation code in a plan without first mapping out its matching test requirements.
+
 ## Testing
 
 - Framework: `pytest` + `pytest-asyncio` (auto mode)
